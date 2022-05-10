@@ -1,0 +1,52 @@
+<br><br><h2>Expenses</h2>
+<%= link_to "New Expense", new_expense_path, class:"btn btn-sm btn-outline-success"  %>
+<%= link_to 'Export', export_expenses_path(:expense_ids => @expenses.pluck(:id), format: :xlsx), method: :post, class:"btn btn-sm btn-outline-export" %><br><br>
+
+
+<br><br>
+
+<div class = "row"></div>
+  <button type="button" class="btn btn-success">
+    Αγορές <span class="badge badge-light"><%= @expenses.sum(:amount) %>€ </span>
+  </button>
+  
+  <button type="button" class="btn btn-danger">
+    ΦΠΑ <span class="badge badge-light"><%= @expenses.sum(:vat_amount) %>€ </span>
+  </button>
+  
+  <button type="button" class="btn btn-info">
+    Αγορές με ΦΠΑ <span class="badge badge-light"><%=  @expenses.sum(:total_amount) %>€ </span>
+  </button>
+<div><br>
+
+<table class="table table-condensed">
+  <thead>
+    <tr class = "bg-primary white center">
+      <th>A/A</th>
+      <th>Date</th>
+      <th>Amount(€)</th>
+      <th>VAT(€)</th>
+      <th>Total Amount(€)</th>
+
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+ 
+  <tbody>
+    <% @expenses.each_with_index do |expense, index| %>
+      <tr class = "center">
+        <td><%= index + 1 %></td>
+        <td>
+          <%= expense.created_on.strftime("%d.%m.%Y") %>
+          <i class=" <%= 'fa-solid fa-money-bill-transfer' if expense.is_not_credit? %> red" style="font-size:18px "></i>  
+        </td>
+        <td><%= expense.amount  %></td>
+        <td><%= expense.vat_amount %></td>
+        <td><%= expense.total_amount %></td>
+        <td width = "10"><%= link_to "Show", expense_path(expense), class:"btn btn-xs btn-outline-primary" %>
+        <td width = "10"><%= link_to "Edit", edit_expense_path(expense), class:"btn btn-xs btn-outline-success" %></td>
+        <td width = "10"><%= link_to "Delete", expense_path(expense), method: :delete, data: { confirm: "Διαγραφή εξόδου?" }, class:"btn btn-xs btn-outline-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,71 @@
+<br><br><br>
+<div class="col-sm-6 offset-2">
+  <table class="table">
+    <thead>
+    </thead>
+    
+    <tbody>
+      <tr>
+        <th class = "bg-primary white" scope="row"> Ημερομηνία </th>
+        <td class = "bg-primary white center"> <%= @expense.created_on.strftime("%d.%m.%Y")  %> </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-info white" scope="row"> Έργο </th>
+        <td class = "bg-info white center"> <%= @expense.project.name  %> </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-primary white" scope="row"> Κατηγορία </th>
+        <td class = "bg-primary white center"> <%= @expense.category  %> </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-info white" scope="row"> Προμηθευτής </th>
+        <td class = "bg-info white center"> <%= @expense.supplier.try(:name)  %> </td>   <!--try(:name) for the case that the expense is not linked to a supplier-->
+      </tr>
+      
+      <tr>
+        <th class = "bg-primary white" scope="row", width = "210"> Με πίστωση </th>
+        <td class = "bg-primary white center">  <%= check_box("option","displayed", checked: @expense.is_credit, :style => "width: 20px; height: 20px;", :disabled=>true) %>  </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-info white" scope="row"> Ποσό(€) </th>
+        <td class = "bg-info white center"><%= delimit @expense.amount %></td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-primary white" scope="row"> ΦΠΑ(€) </th>
+        <td class = "bg-primary white center"><%= delimit @expense.vat_amount %></td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-info white" scope="row"> Παρ. φόρου % </th>
+        <td class = "bg-info white center"> <%= @expense.tax  %> </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-primary white" scope="row"> Συν. Ποσό(€) </th>
+        <td class = "bg-primary white center"><%= delimit @expense.total_amount %></td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-info white" scope="row"> Τύπος Παραστατικού </th>
+        <td class = "bg-info white center"> <%= @expense.doc_type  %> </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-primary white" scope="row"> Αριθμός Παραστατικού </th>
+        <td class = "bg-primary white center"> <%= @expense.doc_number  %> </td> 
+      </tr>
+      
+      <tr>
+        <th class = "bg-info white" scope="row"> Σχόλια </th>
+        <td class = "bg-info white center"> <%= @expense.description  %> </td> 
+      </tr>
+
+    </tbody>
+    
+  </table>
+</div>

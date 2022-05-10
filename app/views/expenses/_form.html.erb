@@ -1,0 +1,49 @@
+<%= form_with(model: @expense, local: true) do |f| %> 
+  
+
+  <div class="form-group row">
+    <%= f.label :category , "Κατηγορία", class: "col-2 col-form-label" %>
+    <%= f.select(:category, Expense.categories,  {:include_blank => true}, {:class=>'col-6 col-form-label form-control'}) %> <!--Expense.categories is defined in expense.rb-->
+  </div>
+
+  <div  class="form-group row">
+    <%= f.label :created_on, "Ημερομηνία", class: "col-2 col-form-label"  %>
+    <%= f.date_field :created_on, class: "col-6 col-form-label form-control" %>
+  </div>
+  
+  <div class="form-group row">
+    <%= f.label :doc_type, "Τύπος Παραστατικού", class: "col-2 col-form-label" %>
+    <%= f.select(:doc_type, Expense.doc_types,  {:include_blank => true}, {:class=>'col-6 col-form-label form-control'}) %> <!--Expense.doc_types is defined in expense.rb-->
+  </div>
+  
+  <div class="form-group row">
+    <%= f.label :doc_number, "Αριθμός Παραστατικού", class: "col-2 col-form-label" %>
+    <%= f.text_field :doc_number, class: "col-6 col-form-label form-control" %>
+  </div>
+  
+  <div class="form-group row">
+    <%= f.label :payment_type , "Τρόπος Πληρωμής", class: "col-2 col-form-label" %>
+    <%= f.select(:payment_type, Expense.payment_types,  {:include_blank => true}, {:class=>'col-6 col-form-label form-control'}) %> <!--Expense.payment_types is defined in expense.rb--> 
+  </div><br>
+  
+  <div class="form-group row">
+    <%= f.label :description, "Σχόλια", class: "col-2 col-form-label"  %>
+    <%= f.text_area :description, rows: 4, class: "col-6 col-form-label form-control" %>
+  </div>
+  
+  
+  <div class="form-group row">
+    <%= f.label :tax, "Παρακράτηση φόρου(%)", class: "offset-6 col-3 col-form-label strong" %>
+    <%= f.text_field :tax, class: "col-2 col-form-label form-control tax"  %>
+  </div>
+  
+  <br><br> 
+  
+  <div class="form-group row">
+    <%= f.submit "Αποθήκευση", class: "btn btn-primary" %>
+  </div>
+
+<% end %> 
+
+
+    

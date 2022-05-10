@@ -1,0 +1,31 @@
+wb = xlsx_package.workbook
+wb.use_autowidth = true
+
+#Styles
+description = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 12
+
+bold   = wb.styles.add_style :b => true
+header = wb.styles.add_style :b => true, :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10
+row    = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10
+
+red = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10, :fg_color => 'EF0920'
+green = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10, :fg_color => '31B115'
+blue = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10, :fg_color => '0000FF'
+normal = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10
+date = wb.styles.add_style :alignment=>{:horizontal => :center}, :font_name => "Calibri", :sz => 10, :format_code => "dd/mm/yyyy"
+
+wb.add_worksheet(name: "Αγορές") do |sheet|
+  # header row
+  sheet.add_row (["Α/Α", "Ημερομηνία", "Ποσό(€)", "ΦΠΑ(€)", "Συν. Ποσό(€)"]), :style => header
+  
+  nrow = 0
+  @expenses.each_with_index do |expense, index| 
+    sheet.add_row [index+1, expense.created_on, expense.amount, expense.vat_amount, expense.total_amount  ], :style => normal
+    nrow = nrow + 1
+  end
+  for irow in (1..nrow).to_a do
+    amount = sheet.rows[irow + 1 - 1].cells[4].value
+    sheet.rows[irow + 1 - 1].cells[4].style = amount > 0.01 ? red : amount < -0.01 ? green : blue
+    sheet.rows[irow + 1 - 1].cells[1].style = date
+  end
+end
