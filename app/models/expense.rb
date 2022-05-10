@@ -6,8 +6,15 @@ class Expense < ApplicationRecord
   validates :payment_type, presence: true
   validates :tax, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
   
+  validate  :doc_type_and_payment_type  #Only "Πίστωση" is allowed when doc_type is "Πιστωτικό"  
+  
+  before_save :calculate_vat_amount
+  before_save :calculate_tax_amount
+  before_save :calculate_total_amount
   
   before_save :update_is_credit
+  
+  attr_accessor :balance  #this adds the method :balance to Expense without the need to store it in the database (used to calculate the supplier balance in transactions)
   
   CATEGORIES = [:"Αγορά οικοπέδου", :"Οικοδομική άδεια", :"Φέρων οπλισμός", :"Τοιχοποιία", :"Ηλεκτρολογικά",
                 :"Υδραυλικά", :"Θέρμανση", :"Σοβάδες", :"Μόνωση", :"Ελαιοχρωματισμοί", :"Κάγκελα-Αλουμίνια",
@@ -35,6 +42,24 @@ class Expense < ApplicationRecord
     end
   end
   
+  #this is called after an expense_item has been removed. The save will trigger update of all expense amounts
+  def update_amounts(expense_item)
+    self.save
+  end
+  
+
+  def calculate_vat_amount
+    self.vat_amount = self.amount * self.vat/100.0
+  end
+  
+  def calculate_tax_amount
+    self.tax_amount = self.amount * self.tax/100.0
+  end
+  
+  def calculate_total_amount
+    self.total_amount = self.amount + self.vat_amount - self.tax_amount
+  end
+  
   def update_is_credit
     if self.is_credit? then
       self.is_credit = true
@@ -42,6 +67,17 @@ class Expense < ApplicationRecord
       self.is_credit = false
     end
   end
+  
+  def factor
+    factor = 1.0
+    
+    if (self.doc_type =="Πιστωτικό Τιμολόγιο Επιστροφής" or self.doc_type == "Πιστωτικό Τιμολόγιο Έκπτωσης")
+      factor = -1.0
+    end
+    
+    factor
+  end
+  
   
   def is_credit?
     breturn = (self.payment_type == "Πίστωση")

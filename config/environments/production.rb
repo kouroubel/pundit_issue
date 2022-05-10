@@ -96,6 +96,13 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+  email: {
+    email_prefix: '[pundit_issue] ',
+    sender_address: %{"notifier" <notifier@example.com>},
+    exception_recipients: %w{albert.roussos@gmail.com}
+  }
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector

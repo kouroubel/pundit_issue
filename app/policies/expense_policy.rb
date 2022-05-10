@@ -13,17 +13,14 @@ class ExpensePolicy < ApplicationPolicy
   # #   @user.has_role? :admin or @user.has_role? :viewer
   # # end
   
-  # def edit?
-  #   @user.has_role? :admin or @user.has_role? :user
-  # end
+  def edit?
+    true
+  end
   
-  # def update?
-  #   @user.has_role? :admin or @user.has_role? :user
-  # end
-  
-  # def new?
-  #   @user.has_role? :admin or @user.has_role? :user
-  # end
+  def update?
+    true
+  end
+
   
   def create?
     true
