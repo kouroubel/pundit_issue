@@ -73,7 +73,6 @@ Rails.application.configure do
   
   config.hosts << "afcca2cf77754c02b5bab29733b0c1ff.vfs.cloud9.us-east-2.amazonaws.com"
   
-
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end

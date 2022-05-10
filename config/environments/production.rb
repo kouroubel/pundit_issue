@@ -103,6 +103,19 @@ Rails.application.configure do
     sender_address: %{"notifier" <notifier@example.com>},
     exception_recipients: %w{albert.roussos@gmail.com}
   }
+  
+  #Sendinblue configuration
+  ActionMailer::Base.smtp_settings = {
+    :delivery_method => 'smtp',
+    :address => 'smtp-relay.sendinblue.com',
+    :port => '587',
+    :authentication => :login,
+    :user_name => ENV['sendinblue_username'],
+    :password => ENV['sendinblue_password'],
+    :enable_starttls_auto => true,
+    :perform_deliveries => true,
+    :raise_delivery_errors => true
+  }
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector
