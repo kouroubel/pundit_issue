@@ -49,9 +49,6 @@ class ExpensesController < ApplicationController
   #exports sales index
   def export
     @expenses = Expense.find( params[:expense_ids] )
-    
-    debugger
-    
     authorize @expenses
 
     respond_to do |format|
